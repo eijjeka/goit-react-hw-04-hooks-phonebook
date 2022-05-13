@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import PropTypes from 'prop-types';
+import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const List = ({ data, onDeleteContact }) => {
   return (
@@ -25,6 +25,17 @@ const List = ({ data, onDeleteContact }) => {
 
 export default List;
 
+List.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ),
+  onDeleteContact: PropTypes.func.isRequired,
+};
+
 const ContainerList = styled.div`
   margin-top: 10px;
 `;
@@ -49,11 +60,12 @@ const Item = styled.li`
   width: 300px;
   border-radius: 5px;
   color: #fff;
-  background-color: ${index => (index.index % 2 !== 0 ? '#0AB3CF' : '#1B59CA')};
+  background-color: ${(index) =>
+    index.index % 2 !== 0 ? "#0AB3CF" : "#1B59CA"};
 `;
 
 const ButtonClose = styled.button.attrs(() => ({
-  type: 'button',
+  type: "button",
 }))`
   padding: 5px 7px;
   border-radius: 50%;
@@ -70,14 +82,3 @@ const TextList = styled.span`
   display: inline-block;
   margin-top: 10px;
 `;
-
-List.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    }),
-  ),
-  onDeleteContact: PropTypes.func.isRequired,
-};

@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import Container from '../Container';
-import PropTypes from 'prop-types';
+import styled from "styled-components";
+import Container from "../Container";
+import PropTypes from "prop-types";
 
 const Filter = ({ value, onChange }) => {
   return (

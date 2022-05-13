@@ -1,74 +1,69 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
-import { nanoid } from 'nanoid';
-import Input from '../Input';
-import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
+import { useState } from "react";
+import Input from "../Input";
+import PropTypes from "prop-types";
+import PhoneInput from "react-phone-number-input";
+import styled from "styled-components";
+import { nanoid } from "nanoid";
+import "react-phone-number-input/style.css";
 
-class Form extends Component {
-  state = {
-    name: '',
-    number: '',
-    id: '',
-  };
+export default function Form({ onSubmit }) {
+  const [name, setName] = useState("");
+  const [number, setNumber] = useState("");
+  const [id, setId] = useState("");
 
-  handleSubmit = e => {
-    if (this.state.number.length > 13)
-      return alert('Please enter correct phone number');
+  const handleSubmit = (e) => {
+    if (number.length > 13) return alert("Please enter correct phone number");
     e.preventDefault();
-    this.props.onSubmit(this.state);
-    this.reset();
+    onSubmit({ name, number, id });
+    reset();
   };
 
-  reset = () => {
-    this.setState({
-      name: '',
-      number: '',
-      id: '',
-    });
+  const reset = () => {
+    setName("");
+    setNumber("");
+    setId("");
   };
 
-  handleInputChange = e => {
-    const { name, value } = e.currentTarget;
-    this.setState({
-      [name]: value,
-      id: nanoid(),
-    });
+  const handleInputChange = (e) => {
+    setName(e.currentTarget.value);
+    setId(nanoid());
   };
 
-  render() {
-    return (
-      <FormContainer onSubmit={this.handleSubmit}>
-        <Input
-          onChange={this.handleInputChange}
-          title="Name"
-          type="text"
-          name="name"
-          value={this.state.name}
-          pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-          placeholder="Enter please name"
-        />
-        <PhoneInput
-          defaultCountry="UA"
-          onChange={number => this.setState({ number })}
-          region="Europe"
-          title="Number"
-          type="tel"
-          name="number"
-          value={this.state.number}
-          placeholder="Enter phone number"
-          autoComplete="off"
-          international
-          className="inputPhone"
-          maxLength="16"
-        />
-        <BtnSubmit onSubmit={this.handleSubmit}>Add contact</BtnSubmit>
-      </FormContainer>
-    );
-  }
+  return (
+    <FormContainer onSubmit={handleSubmit}>
+      <Input
+        onChange={handleInputChange}
+        title="Name"
+        type="text"
+        name="name"
+        value={name}
+        pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+        placeholder="Enter please name"
+      />
+      <PhoneInput
+        defaultCountry="UA"
+        onChange={(number) => {
+          setNumber(number);
+        }}
+        region="Europe"
+        title="Number"
+        type="tel"
+        name="number"
+        value={number}
+        placeholder="Enter phone number"
+        autoComplete="off"
+        international
+        className="inputPhone"
+        maxLength="16"
+      />
+      <BtnSubmit onSubmit={handleSubmit}>Add contact</BtnSubmit>
+    </FormContainer>
+  );
 }
 
-export default Form;
+Form.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
 
 const FormContainer = styled.form`
   display: flex;
@@ -87,18 +82,17 @@ const FormContainer = styled.form`
 `;
 
 const BtnSubmit = styled.button.attrs(() => ({
-  type: 'submit',
+  type: "submit",
 }))`
   position: relative;
   padding: 5px 10px;
   display: inline-block;
   border-radius: 5px;
-  /* outline: none; */
   border: none;
   cursor: pointer;
 
   &::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
