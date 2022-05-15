@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import useLocalStorage from "./hooks/useLocalStorage";
 import Container from "./Container";
 import Form from "./Form";
@@ -10,13 +10,13 @@ export default function App() {
   const [contacts, setContacts] = useLocalStorage("contacts", []);
   const [filterName, setFilterName] = useState("");
 
-  const onFilterContact = () => {
+  const visibleContacts = useMemo(() => {
     const normalizeFilter = filterName.toLocaleLowerCase();
 
     return contacts.filter((contact) =>
       contact.name.toLowerCase().includes(normalizeFilter)
     );
-  };
+  }, [contacts, filterName]);
 
   const formSubmitHandler = (data) => {
     const checkName = contacts.find((el) => el.name === data.name);
@@ -40,7 +40,7 @@ export default function App() {
         value={filterName}
         onChange={(e) => setFilterName(e.currentTarget.value)}
       />
-      <List data={onFilterContact()} onDeleteContact={deleteContact} />
+      <List data={visibleContacts} onDeleteContact={deleteContact} />
     </Container>
   );
 }
